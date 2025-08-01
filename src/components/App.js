@@ -6,54 +6,41 @@ const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"];
 function AutoComplete() {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
+    const timer = setTimeout(() => {
       if (input.trim() === "") {
         setSuggestions([]);
-        return;
+      } else {
+        const filtered = fruits.filter((fruit) =>
+          fruit.toLowerCase().startsWith(input.toLowerCase())
+        );
+        setSuggestions(filtered);
       }
+    }, 300); // debounce for better UX
 
-      setLoading(true);
-
-      const filtered = fruits.filter((fruit) =>
-        fruit.toLowerCase().startsWith(input.toLowerCase())
-      );
-
-      setSuggestions(filtered);
-      setLoading(false);
-    }, 300);
-
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(timer);
   }, [input]);
 
   return (
-    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
-      <h2>Fruit AutoComplete</h2>
-
+    <div>
+      <h2>AutoComplete</h2>
       <input
         type="text"
         className="search"
-        placeholder="Search fruit..."
+        placeholder="Search fruits"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        style={{ padding: "8px", width: "200px" }}
       />
 
-      {loading && <div>Loading...</div>}
-
-      <ul className="suggestions">
-        {input.trim() !== "" && suggestions.length === 0 ? (
-          <li className="no-results">No suggestions</li>
-        ) : (
-          suggestions.map((item, index) => (
-            <li key={index} className="suggestion-item">
-              {item}
-            </li>
-          ))
-        )}
-      </ul>
+      {/* Only render <ul> if suggestions exist */}
+      {suggestions.length > 0 && (
+        <ul>
+          {suggestions.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
