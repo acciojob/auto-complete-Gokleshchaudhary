@@ -12,7 +12,6 @@ function AutoComplete() {
     const timeoutId = setTimeout(() => {
       if (input.trim() === "") {
         setSuggestions([]);
-        setLoading(false);
         return;
       }
 
@@ -24,9 +23,9 @@ function AutoComplete() {
 
       setSuggestions(filtered);
       setLoading(false);
-    }, 300); // simulate async delay
+    }, 300);
 
-    return () => clearTimeout(timeoutId); // cleanup for debounce
+    return () => clearTimeout(timeoutId);
   }, [input]);
 
   return (
@@ -44,20 +43,12 @@ function AutoComplete() {
 
       {loading && <div>Loading...</div>}
 
-      <ul
-        style={{
-          border: "1px solid #ccc",
-          padding: "10px",
-          marginTop: "5px",
-          width: "200px",
-          listStyleType: "none"
-        }}
-      >
-        {suggestions.length === 0 ? (
-          <li>No suggestions</li>
+      <ul className="suggestions">
+        {input.trim() !== "" && suggestions.length === 0 ? (
+          <li className="no-results">No suggestions</li>
         ) : (
           suggestions.map((item, index) => (
-            <li key={index} style={{ padding: "5px 0" }}>
+            <li key={index} className="suggestion-item">
               {item}
             </li>
           ))
