@@ -1,14 +1,13 @@
-import React from 'react'
-import App from './App' // ✅ Relative import from same folder
-import { mount } from 'cypress/react'
+import React from 'react';
+import App from './App'; // ✅ Same folder me
+import { mount } from 'cypress/react';
 
-describe('App', () => {
+describe('testing auto complete', () => {
   beforeEach(() => {
-    mount(<App />)
-  })
+    mount(<App />);
+  });
 
-  it('should display the search input', () => {
-    cy.get('.search').should('exist')
-  })
-})
-
+  it('testing tags on initial render', () => {
+    cy.get('.search').should('exist');
+  });
+});
