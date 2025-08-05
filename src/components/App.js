@@ -1,54 +1,46 @@
-import React, { useState, useEffect } from "react";
-import "./App.css";
+// App.js
+
+import React, { useState } from 'react';
 
 const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"];
 
 function App() {
-  const [input, setInput] = useState("");
+  const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
-  useEffect(() => {
-    // Simulate async fetch
-    const delayDebounce = setTimeout(() => {
-      if (input.trim() === "") {
-        setSuggestions([]);
-      } else {
-        const filtered = fruits.filter((fruit) =>
-          fruit.toLowerCase().startsWith(input.toLowerCase())
-        );
-        setSuggestions(filtered);
-      }
-    }, 300); // delay to avoid UI freeze
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
 
-    return () => clearTimeout(delayDebounce);
-  }, [input]);
-
-  const handleSelect = (fruit) => {
-    setInput(fruit);
-    setSuggestions([]);
+    // Filter suggestions
+    if (value.trim() === '') {
+      setSuggestions([]);
+    } else {
+      const filtered = fruits.filter(fruit =>
+        fruit.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setSuggestions(filtered);
+    }
   };
 
   return (
-    <div className="autocomplete-container">
-      <h2>Fruit Search</h2>
+    <div className="weather">
       <input
         type="text"
         className="search"
-        placeholder="Type a fruit..."
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        value={query}
+        onChange={handleChange}
+        placeholder="Search fruits..."
       />
-      {suggestions.length > 0 && (
-        <ul className="suggestions">
-          {suggestions.map((fruit, index) => (
-            <li key={index} onClick={() => handleSelect(fruit)}>
-              {fruit}
-            </li>
-          ))}
-        </ul>
-      )}
+      
+      <ul>
+        {suggestions.map((fruit, index) => (
+          <li key={index}>{fruit}</li>
+        ))}
+      </ul>
     </div>
   );
 }
 
+// ✅ Export always at the end
 export default App;
