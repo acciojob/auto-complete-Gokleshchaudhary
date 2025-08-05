@@ -1,7 +1,28 @@
-.search {
-  font-size: 16px;
-  padding: 10px;
-  width: 250px;
-  margin-bottom: 10px;
+.autocomplete-container {
+  width: 300px;
+  margin: 50px auto;
+  font-family: sans-serif;
 }
 
+.search {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.suggestions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.suggestions li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background-color: #f0f0f0;
+}
