@@ -1,5 +1,5 @@
 import React from 'react';
-import App from './App'; // ✅ Same folder me
+import App from './App'; // ✅ 'App.js' is in the same folder
 import { mount } from 'cypress/react';
 
 describe('testing auto complete', () => {
