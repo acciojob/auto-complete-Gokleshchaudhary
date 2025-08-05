@@ -3,68 +3,52 @@ import "./App.css";
 
 const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"];
 
-function AutoComplete() {
+function App() {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
+    // Simulate async fetch
+    const delayDebounce = setTimeout(() => {
       if (input.trim() === "") {
         setSuggestions([]);
-        setLoading(false);
-        return;
+      } else {
+        const filtered = fruits.filter((fruit) =>
+          fruit.toLowerCase().startsWith(input.toLowerCase())
+        );
+        setSuggestions(filtered);
       }
+    }, 300); // delay to avoid UI freeze
 
-      setLoading(true);
-
-      const filtered = fruits.filter((fruit) =>
-        fruit.toLowerCase().startsWith(input.toLowerCase())
-      );
-
-      setSuggestions(filtered);
-      setLoading(false);
-    }, 300); // simulate async delay
-
-    return () => clearTimeout(timeoutId); // cleanup for debounce
+    return () => clearTimeout(delayDebounce);
   }, [input]);
 
-  return (
-    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
-      <h2>Fruit AutoComplete</h2>
+  const handleSelect = (fruit) => {
+    setInput(fruit);
+    setSuggestions([]);
+  };
 
+  return (
+    <div className="autocomplete-container">
+      <h2>Fruit Search</h2>
       <input
         type="text"
         className="search"
-        placeholder="Search fruit..."
+        placeholder="Type a fruit..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        style={{ padding: "8px", width: "200px" }}
       />
-
-      {loading && <div>Loading...</div>}
-
-      <ul
-        style={{
-          border: "1px solid #ccc",
-          padding: "10px",
-          marginTop: "5px",
-          width: "200px",
-          listStyleType: "none"
-        }}
-      >
-        {suggestions.length === 0 ? (
-          <li>No suggestions</li>
-        ) : (
-          suggestions.map((item, index) => (
-            <li key={index} style={{ padding: "5px 0" }}>
-              {item}
+      {suggestions.length > 0 && (
+        <ul className="suggestions">
+          {suggestions.map((fruit, index) => (
+            <li key={index} onClick={() => handleSelect(fruit)}>
+              {fruit}
             </li>
-          ))
-        )}
-      </ul>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
 
-export default AutoComplete;
+export default App;
